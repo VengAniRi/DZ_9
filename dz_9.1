@@ -1,0 +1,22 @@
+import requests
+
+acces_token = '2619421814940190'
+url = f'https://www.superheroapi.com/api.php/{acces_token}'
+names = ['Hulk', 'Captain America', 'Thanos']
+
+top_intel = -1
+top_name = ''
+for name in names:
+    r = requests.get(f'{url}/search/{name}')
+    if r.status_code != requests.codes.ok:
+        print(f'При поиске {name} в базе произошла ошибка {r.status_code}')
+        continue
+    data = r.json()
+    intel = int(data['results'][0]['powerstats']['intelligence'])
+    
+
+    if intel > top_intel:
+        top_intel = intel
+        top_name = name
+
+print(f'{top_name} - самый умный, его интеллект равен {top_intel}.')
